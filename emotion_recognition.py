@@ -125,7 +125,7 @@ def segmentFace(inputFile, imgXdim, imgYdim):
         img = inputFile[q:q+s, p:p+r]
         img = cv2.resize(img, (imgXdim, imgYdim)) 
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        return img
+        return (img,p,q,r,s)
     else:
         return None
 
@@ -144,7 +144,7 @@ PORT = 5555 # Pick an open Port (1000+ recommended), must match the server port
 # initialze picamera 
 camera = PiCamera()
 camera.framerate = 30
-camera.resolution = (600, 800)
+camera.resolution = (700, 600)
 rawCapture = PiRGBArray(camera)
 camera.capture(rawCapture,format='bgr')
 rawCapture.truncate(0)
@@ -193,20 +193,22 @@ with tf.Session() as sess:
         t1=time.time()
         image = frame.array
         #face recognition and segmentation
-        image_seg = segmentFace(image, imgXdim, imgYdim)
+        image_rec = segmentFace(image, imgXdim, imgYdim)
 
-        image=cv2.resize(image,(800,600))
+        #image=cv2.resize(image,(800,600))
         ww = 1024
         hh = 600
         color = (0,0,0)
         ht,wt,cc=image.shape
         result = np.full((hh,ww,cc), color, dtype=np.uint8)
-        x_offset=224
+        x_offset=324
         y_offset=0;
         result[y_offset:y_offset+image.shape[0], x_offset:x_offset+image.shape[1]] = image
 
-        if image_seg is not None:
+        if image_rec is not None:
+            image_seg,x1,y1,w1,h1=image_rec
             cv2.putText(result, "Face Detected", (50,50),  cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1)
+            cv2.rectangle(result,(x1+x_offset,y1),(x1+w1+x_offset,y1+h1),(0,255,0),1)
             testX = np.reshape(image_seg, (1, imgXdim*imgYdim))
             testX = testX.astype(np.float32)
             # truncate buffer
@@ -235,6 +237,7 @@ with tf.Session() as sess:
 
             #label image
             #print("[" + get_time() + "] Emotion: " + labels[argmax])
+           
             neutral_percentage=str((final_sum_predictions[0][0][0]*100).round(1,None))
             anger_percentage=str((final_sum_predictions[0][0][1]*100).round(1,None))
             contempt_percentage=str((final_sum_predictions[0][0][2]*100).round(1,None))
@@ -243,17 +246,20 @@ with tf.Session() as sess:
             happy_percentage=str((final_sum_predictions[0][0][5]*100).round(1,None))
             sadness_percentage=str((final_sum_predictions[0][0][6]*100).round(1,None))
             surprise_percentage=str((final_sum_predictions[0][0][7]*100).round(1,None))
-            cv2.putText(result, labels[0]+": "+neutral_percentage+"%", (50,400),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
-            cv2.putText(result, labels[1]+": "+anger_percentage+"%", (50,425),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
-            cv2.putText(result, labels[2]+": "+contempt_percentage+"%", (50,450),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
-            cv2.putText(result, labels[3]+": "+disgust_percentage+"%", (50,475),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
-            cv2.putText(result, labels[4]+": "+fear_percentage+"%", (50,500),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
-            cv2.putText(result, labels[5]+": "+happy_percentage+"%", (50,525),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
-            cv2.putText(result, labels[6]+": "+sadness_percentage+"%", (50,550),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
-            cv2.putText(result, labels[7]+": "+surprise_percentage+"%", (50,575),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
+            
+            cv2.putText(result, labels[1]+": "+anger_percentage+"%", (50,400),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
+            cv2.putText(result, labels[3]+": "+disgust_percentage+"%", (50,425),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
+            cv2.putText(result, labels[4]+": "+fear_percentage+"%", (50,450),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
+            cv2.putText(result, labels[5]+": "+happy_percentage+"%", (50,475),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
+            cv2.putText(result, labels[6]+": "+sadness_percentage+"%", (50,500),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
+            cv2.putText(result, labels[7]+": "+surprise_percentage+"%", (50,525),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
+            if(modelDir == "Models/CK/"):
+                cv2.putText(result, labels[0]+": "+neutral_percentage+"%", (50,550),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
+                cv2.putText(result, labels[2]+": "+contempt_percentage+"%", (50,575),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
             
             final_emotion=np.argmax(final_sum_predictions)
-            cv2.putText(result, "You're emotion is: "+labels[final_emotion], (50,90),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
+            cv2.putText(result, "You're emotion is:", (50,90),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
+            cv2.putText(result, labels[final_emotion], (50,140),  cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
             if labels[final_emotion] != last_emotion:
                     switch_light_color('pixelflux',emotion_color[final_emotion])
                     last_emotion = labels[final_emotion]
