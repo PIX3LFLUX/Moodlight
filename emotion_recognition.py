@@ -30,7 +30,7 @@ final_sum_predictions=np.zeros((1,1,8))
 labels = ["neutral", "anger", "contempt", "disgust", "fear", "happy", "sadness", "surprise"]
 emotion_color=[8000,2000,50000,16000,0,38000,46000,54000]
 color_names=["yellow", "red", "purple", "green", "dark red", "light blue", "dark blue", "pink"]
-modelDir = "Models/OuluCASIA/"
+modelDir = "Models/CK/"
 bridge_ip="192.168.178.79"
 bridge_username="ZdgukOoXbpuwxKhcMioCljyeyCMKXIeJC0LmEtKI"
 #hue functions

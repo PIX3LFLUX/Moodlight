@@ -7,7 +7,7 @@ By [Paul Theurer]
 1. [Introduction](#introduction)
 2. [Theorie der Emotionserkennung](#TheorieEmotion)
 3. [Face & emotion recognition](#citation)
-4. [Philipps HUE Ansteuerung](#api)
+4. [Philipps HUE Ansteuerung](#lichtsteuerung)
 5. [Farb-Emotionszuordnung](#models)
 6. [Anleitung](#instruction)
 
@@ -24,11 +24,11 @@ Das Projetk Mood Light versucht menschliche Emotionen mithilfe neuronaler Netze 
    
   * Emotionserkennung: [MicroExpNet](https://github.com/cuguilke/microexpnet): Für das Paper [hier](https://arxiv.org/pdf/1711.07011v4.pdf) klicken. \
   cugu2019microexpnet,
-  Titel: MicroExpNet: An Extremely Small and Fast Model For Expression Recognition From Face Images
-  Author: Cugu, Ilke and Sener, Eren and Akbas, Emre
-  Buchtitel: 2019 Ninth International Conference on Image Processing Theory, Tools and Applications (IPTA), Seite: 1--6
-  Jahr: 2019
-  oOrganisation: IEEE
+  Titel: MicroExpNet: An Extremely Small and Fast Model For Expression Recognition From Face Images \
+  Author: Cugu, Ilke and Sener, Eren and Akbas, Emre\
+  Buchtitel: 2019 Ninth International Conference on Image Processing Theory, Tools and Applications (IPTA), Seite: 1--6\
+  Jahr: 2019\
+  Organisation: IEEE
 }
  <a name="TheorieEmotion"></a>
 ## Theorie der Emotionserkennung
@@ -43,37 +43,41 @@ Nocheinmal zusammengefasst funktioniert die Emotionserkennung folgendermaßen: Z
 Da das neuronale Netz nur mathematische Operationen nutzt, ist es logisch, dass bei jedem Eingang auch ein Ergebnis am Ausgang vorliegt. Anders formuliert: Das Netz erkennt in einem Gegenstand (zB. einem Eimer) ebenso eine Emotion wie in einem Gesicht. Um dieses Szenario zu umgehen, und um die Genauigkeit des Netzes zu erhöhen, wird vor der Emotionserkennung, noch eine Gesichtserkennung geschaltet. So können nur Emotionen auf Gesichtern erkannt werden, und das Bild auf das Gesicht zugeschnitten werden. Durch den wahrscheinlich kleineren Bildausschnitt, steigt die Auflösung des Gesichts, wodurch das Gesicht die Emotionen besser erkennen kann.    Zur Gesichtserkennung wird die Haar Cascade von CV2, einer Python Bibliothek zur Bildverarbeitung und Computer Vision, genutzt. Hier bei handelt es sich um ein sogenanntes convolutional neural network (abk. cnn). Dabei wird immer ein kleines Fenster über das Bild geschoben und mit verschiedenen Bildbereichen mathematisch gefaltet. Dabei wird für jeden Bereich bestimmt, ob sich in diesem Bereich ein Gesicht befindet. Die Haar Cascade nutzt dabei noch bestimmte Muster, um so bestimmte Strukturen besser zu erkennen. So ähnelt die Form der Nasen einem horizontalen Balken, in dem Pixel für gewöhnlich heller sind als im Rest des Gesichts sind. Durch diesen Prozess ist es möglich eine Nase zu erkennen. Als Ausgabe gibt die Gesichtserkennung die Bildkoordinaten der Ecken des Rechtecks, dass das Gesicht enthält zurück. So kann später das Bild zugeschnitten werden.
 
 ### Emotion Recognition- Emotionserkennung
- Zur Emotionserkennung wurden zuest neuronale Netze, welche auf dem Datenset FER 2013 aufbauen genutzt. Auf dem dazugehörigen Testset wurden Genauigkeiten von ca. [70%](https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/leaderboard) erreicht. Da beim Projekt Performance ebenfalls eine Rolle spielt,  erzielten performante Netze nur um die 60%. Beim Versuch ein eigenes Netz zu trainieren wurden ca. 55% erreicht. Diese Genauigkeit wurde von Netzen, welche auf andere Datensets aufbauen übertroffen.\ Bei Recherchen wurde ich auf das Microexpnet aufmerksam, welches auffallend Ressourcensparend war und auf dem CK+ Datenset eine Genauigekeit von 84,8 % erzielte und bei dem Oulu-Casia Datenset immerhin 62,69% erzielte. Welches Datenset genutz werden soll ist dabei vor dem start des Programs im Source Code einstellbar, Die Datensets teilen sich 5 mögliche Emotionen, unterscheiden sich aber inder Anzahl der erkennbaren Emotionen, sowie in der Verteilung der Bilder pro Emotionen im Datenset.  Diese Bilder pro Emotionen für die beiden Datensets sind im folgenden Bild dargestellt.
-<img src="/Bilder/Emotionen_Datenset.png" width="800" height="200" />
+ Zur Emotionserkennung wurden zuest neuronale Netze, welche auf dem Datenset FER 2013 aufbauen genutzt. Auf dem dazugehörigen Testset wurden Genauigkeiten von ca. [70%](https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/leaderboard) erreicht. Da beim Projekt Performance ebenfalls eine Rolle spielt,  erzielten performante Netze nur um die 60%. Beim Versuch ein eigenes Netz zu trainieren wurden ca. 55% erreicht. Diese Genauigkeit wurde von Netzen, welche auf andere Datensets aufbauen übertroffen.\ Bei Recherchen wurde ich auf das Microexpnet aufmerksam, welches auffallend Ressourcensparend war und auf dem CK+ Datenset eine Genauigekeit von 84,8 % erzielte und bei dem Oulu-Casia Datenset immerhin 62,69% erzielte. Welches Datenset genutz werden soll ist dabei vor dem start des Programs im Source Code einstellbar, Die Datensets teilen sich 5 mögliche Emotionen, unterscheiden sich aber inder Anzahl der erkennbaren Emotionen, sowie in der Verteilung der Bilder pro Emotionen im Datenset.  Die Bilder pro Emotionen für die beiden Datensets sind im folgenden Bild dargestellt.
+<img src="/Bilder/Emotionen_Datenset.png" width="800" height="200" /> \
+Im direkten Vergleich ist zusehen, dass CK+ zwar mehr Bilder insgesamt hat, aber diese auch auf mehr Emotionen verteilt sind. Dazu kommt, dass diese ungleich auf die Emotionen verteilt sind, was die Genauigkeit auch beeinflussen kann. Außerdem fallen bei Oulu-Casia zwei Emotionen weg. In diesem Fall "Neutral" und "Contempt" (dt. Verachtung). 
 
+<a name="lichtsteuerung"/a>
+## Lichtsteuerung - Ansteuerung der Philipps Lampen
+Die Lichtsteuerung wird zuerst getrennt von der Farbzuordnung betrachtet. Hier soll nur die Kommunikation des Raspberry Pi's mit den verwendeten HUE Lampen erklärt werden. Vor Beginn wieder die Anmerkung, dass HUE Lampen verwendet wurden, da diese im Smart Home-Bereich weit verbreitet sind. Sie liegen damit dem späteren das Raumlicht zuhause anzupassen am nächsten. Die erste Idee war die Lampen direkt über Zigbee anzusteuern. Allerdings ist diese Implementierung kompliizerter und schlechter dokumentiert. In der späteren Umsetzung verwende ich http Request über das lokale Netzwerk. Im grunde baut man dabei eine URL für alle Befehle auf. 
+Als erstes ist der Befehl zum An- und Ausschalten der HUE Lampen zusehen.
+```python
+  def turn_on_group(where):
+    groups = { 'pixelflux': 1}
+    group_id = groups[where]
 
-## API
-**MicroExpNet(x, y, teacherLogits, lr, nClasses, imgXdim, imgYdim, batchSize, keepProb, temperature, lambda_)**
+    payload = {"on":True}
+    headers = {'content-type': 'application/json'}
+    r = requests.put("http://"+bridge_ip+"/api/"+bridge_username+"/groups/"+str(group_id)+"/action", data=json.dumps(payload), headers=headers)
+```
+Bei der bridge_ip handelt es sich um die IP-Adresse der HUE Bridge. Diese kann in der Philipps HUE App gefunden werden. Der **bridge_username** muss erzeugt werden und stellt eine Art der Zugangsberechtigung dar. Ein Tutorial für die Ansteuerung der HUE Lights ist [hier](https://developers.meethue.com/develop/get-started-2/) zu finden. "pixelflux" ist dabei der Name einer angelegten HUE Gruppe. Dieser wurde in der APP bereits angelegt. Der **payload** beinhaltet die jeweiligen Befehle. "on" hat dabei die möglichen Werte "true" und "false". Ein Bespiel mit weiteren Befehlen ist bei der Einstellung der Lichtfarbe zu sehen:
+```python
+def switch_light_color(where,what):
+    groups = { 'pixelflux': 1}
+    group_id = groups[where]
 
-This is the class where the magic happens. Take a look at **exampleUsage.py** for a quick test drive.
+    payload = {"on":True,"sat":254, "bri":254,"hue":what}
+    headers = {'content-type': 'application/json'}
+    r = requests.put("http://"+bridge_ip+"/api/"+bridge_username+"/groups/"+str(group_id)+"/action", data=json.dumps(payload), headers=headers)
 
-**Parameters**
-  - x: Tensorflow placeholder for input images 
-  - y: Tensorflow placeholder for one-hot labels (default: None -> unlabeled image testing)
-  - teacherLogits: Tensorflow placeholder for the logits of the teacher (default: None -> for standalone testing)
-  - lr: Learning rate (default: 1e-04)
-  - nClasses: Number of emotion classes (default: 8)
-  - imgXdim: Dimension of the image (default: 84)
-  - imgYdim: Dimension of the image (default: 84)
-  - batchSize: Batch size (default: 64)
-  - keepProb: Dropout (default: 1)
-  - temperature: The hyperparameter to soften the teacher's probability distributions (default: 8)
-  - lamba_: Weight of the soft targets (default: 0.5)
+```
+ Mit den Befehlen "sat" und "bri" wird die Sättigung und die Helligkeit eingestellt. Der "what"-Parameter der Funktion ist die Farbe des Lichts. Diese ist von 1- 65.000 einstellbar. Wobei der Farbkreis auf diese Skala abgebildet wird. der Wert 0 beginnt dabei mit dunkelroten Farben und geht über orange, gelb, grün, blau wieder gegen rot. 
 
-## Models
+## Farb- zu Emotionszuordnung
+Bei der Zuordnung von Emotionen zu Farbe orientiert sich die Arbeit an **"Plutchiks Wheel of Emotion"**. Dieser geht in seiner Theorie von 8 Basisemotionen aus. Diese ordnet er Farben auf dem Farbkreis zu. Diese Theorie lässt sich dreidimensional erweitern. So wird aus dem Kreis ein Kegel. Dabei setzen sich alle anderen Emotionen aus einer Mischung der Basisemotionen zusammen. Dadurch ordnet er jeder Emotion eine Farbe zu.
+Zweidimensional dargestellt, ergibt sihc folgendes Muster: 
 
-We provide pre-trained MicroExpNet models for both CK+ and Oulu-CASIA.
+<img src="/Bilder/Farbkreis.png" width="800" /> \
 
-In addition, one can find sample pre-trained teacher models which are derived from the original [Keras](https://github.com/keras-team/keras) implementation of [Inception_v3](https://keras.io/applications/#inceptionv3):
- * [TeacherExpNet_CK.h5](http://user.ceng.metu.edu.tr/~e1881739/microexpnet/TeacherExpNet_CK.h5)
- * [TeacherExpNet_OuluCASIA.h5](http://user.ceng.metu.edu.tr/~e1881739/microexpnet/TeacherExpNet_OuluCASIA.h5) 
- * [TeacherExpNet.json](http://user.ceng.metu.edu.tr/~e1881739/microexpnet/TeacherExpNet.json) 
-
-**Labels of the both models**
-
-`0: neutral, 1: anger, 2: contempt, 3: disgust, 4: fear, 5: happy, 6: sadness, 7: surprise`
+### Quellen
+Farbkegel: https://www.wikiwand.com/de/Robert_Plutchik
