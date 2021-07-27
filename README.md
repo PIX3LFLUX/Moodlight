@@ -44,7 +44,7 @@ Da das neuronale Netz nur mathematische Operationen nutzt, ist es logisch, dass 
 
 ### Emotion Recognition- Emotionserkennung
  Zur Emotionserkennung wurden zuest neuronale Netze, welche auf dem Datenset FER 2013 aufbauen genutzt. Auf dem dazugehörigen Testset wurden Genauigkeiten von ca. [70%](https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/leaderboard) erreicht. Da beim Projekt Performance ebenfalls eine Rolle spielt,  erzielten performante Netze nur um die 60%. Beim Versuch ein eigenes Netz zu trainieren wurden ca. 55% erreicht. Diese Genauigkeit wurde von Netzen, welche auf andere Datensets aufbauen übertroffen.\ Bei Recherchen wurde ich auf das Microexpnet aufmerksam, welches auffallend Ressourcensparend war und auf dem CK+ Datenset eine Genauigekeit von 84,8 % erzielte und bei dem Oulu-Casia Datenset immerhin 62,69% erzielte. Welches Datenset genutz werden soll ist dabei vor dem start des Programs im Source Code einstellbar, Die Datensets teilen sich 5 mögliche Emotionen, unterscheiden sich aber inder Anzahl der erkennbaren Emotionen, sowie in der Verteilung der Bilder pro Emotionen im Datenset.  Die Bilder pro Emotionen für die beiden Datensets sind im folgenden Bild dargestellt.
-<img src="/Bilder/Emotionen_Datenset.png" width="800" height="200" /> \
+<img src="/Bilder/Emotionen_Datenset.png" width="600"/> \
 Im direkten Vergleich ist zusehen, dass CK+ zwar mehr Bilder insgesamt hat, aber diese auch auf mehr Emotionen verteilt sind. Dazu kommt, dass diese ungleich auf die Emotionen verteilt sind, was die Genauigkeit auch beeinflussen kann. Außerdem fallen bei Oulu-Casia zwei Emotionen weg. In diesem Fall "Neutral" und "Contempt" (dt. Verachtung). 
 
 <a name="lichtsteuerung"/a>
