@@ -9,7 +9,7 @@ By [Paul Theurer]
 3. [Face & emotion recognition](#Face-Detection-Gesichtserkennung)
 4. [Philipps HUE Ansteuerung](#Lichtsteuerung---Ansteuerung-der-Philipps-Lampen)
 5. [Farb-Emotionszuordnung](#Farb--zu-Emotionszuordnung)
-6. [Anleitung](#instruction)
+6. [Anleitung](#Anleitung)
 
 ## Introduction
 
@@ -78,6 +78,6 @@ Bei der Zuordnung von Emotionen zu Farbe orientiert sich die Arbeit an **"Plutch
 Zweidimensional dargestellt, ergibt sihc folgendes Muster: 
 
 <img src="/Bilder/Farbkreis.png" width="800" /> \
-
+## Anleitung
 ### Quellen
 Farbkegel: https://www.wikiwand.com/de/Robert_Plutchik
