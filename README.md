@@ -5,9 +5,9 @@ By [Paul Theurer]
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [Theorie der Emotionserkennung](#TheorieEmotion)
-3. [Face & emotion recognition](#citation)
-4. [Philipps HUE Ansteuerung](#lichtsteuerung)
+2. [Theorie der Emotionserkennung](Theorie-der-Emotionserkennung)
+3. [Face & emotion recognition](#Face-Detection-Gesichtserkennung)
+4. [Philipps HUE Ansteuerung](#Lichtsteuerung-Ansteuerung-der-Philipps-Lampen)
 5. [Farb-Emotionszuordnung](#models)
 6. [Anleitung](#instruction)
 
@@ -30,7 +30,7 @@ Das Projetk Mood Light versucht menschliche Emotionen mithilfe neuronaler Netze 
   Jahr: 2019\
   Organisation: IEEE
 }
- <a name="TheorieEmotion"/a>
+ 
 ## Theorie der Emotionserkennung
 Um das Ziel der Emotionserkennung zu erreichen, wird im folgenden Projekt der Einfachkeit halber, ausschließlich das Gesicht betrachtet. Dieses ist neben Sprache und Körpersprache eine der drei Erkennungsmerkmale für Emotionen. Obwohl Emotionen auch von Menschen häufig als subjektiv und komplex wahrgenommen werden, gibt es durchaus Gründe mithile von Maschinen eine Emotionserkennung zu realisieren. So existiert kein Konsens in der Diskussion darum, wie der Mensch selber Gefühlsausdrücke wahrnimmt. Eine Theorie geht davon aus, dass der Mensch, ähnlich wie die KI im Folgenden, auf Mustererkennung setzt. Bei dieser greift der Mensch beim Erkennen von komplexen Emotionen wie Wut oder Angst, auf die Erinnerung zurück und wendet dabei selber eine Mustererkennung auf Situationen an. Worin diese Muster bestehen ist von vielen Faktoren abhängig, und unterscheidet sich auch kulturell. Desweiteren geht die Theorie davon aus, dass wenn diese wegfallen würde, nur sogenannte Basisemotionen erkannt werden können. So konnten Probanden einer [Studie](https://www.deutschlandfunk.de/muster-theorie-der-emotionen-wie-menschen-gefuehle-erkennen.1148.de.html?dram:article_id=319223), welche nicht auf diese Mustererkennung zurückgreifen konnten auch keine komplexeren Emotionen wahrnehmen, sondern sie lediglich in die Kategorien postiv, negativ und neutral einteilen. Läge die Theorie richtig, würde die Implementierung der Mustererkennung es erlauben komplexere Emotionen zu erkennnen. Eine höhere Genauigkeit könnte durch die Betrachtung weiterer Indikatoren erzielt werden. Als Beispiel wird die Analyse der Stimme bereits in anderen Projekten umgesetzt. Dies kann sinnvoll sein, wenn die betrachtete Emotion vielleicht einfacher über Audio wahrzunehmen ist. So ist der Mensch in der Lage an der Stimme zu erkennen, ob eine Person zuvor geweint hat.
 
@@ -39,7 +39,7 @@ Wie im vorigen Abschnitt erklärt, ist der Ansatz zur Emotionserkennug zwischen 
 Nocheinmal zusammengefasst funktioniert die Emotionserkennung folgendermaßen: Zuerst muss ein Netz mit bestimmten Parametern erstellt werden. Zur Vereinfachung lassen wir die genaue Betrachtung dieser Parameter weg. Wichtig ist, dass die Anzahl der Pixel eines Bildes die Anzahl der Eingangsvariablen definiert. Um neuronale Netze möglichst schnell zu machen, wird die Auflösung der Bilder verringert und damit die Anzahl der Eingänge reduziert. Die Anzahl der zu erkennden Emotionen bestimmt die Anzahl der Ausgänge, welche Wahrscheinlichkeiten für die verschiedenen Zustände ausgeben und aufaddiert 100% ergeben. Zwischen Ein- und Ausgängen führt das Netz Rechenoperationen durch, bei denen unterschiedliche Regionen des Bildes unterschiedlcih gewichtet werden. Als Beispiel ist der Mund bei der Emotionserkennung ein wichtigerer Bereich als die Nase. Damit hat das Aussehen der Nase einen geringeren Einfluss auf das Ergebnis als der Mund. Nachdem das Netz erstellt wurde, beginnt das Training des Netzes. Hierbei wird ein sogenanntes Datenset zur Hand genommen. In unserem Fall handelt es sich dabei, um viele Bilder in denen unterscheidliche Emotionen dargestellt werden. Zu jedem Bild ist die passende Emotion hinterlegt. So weiß das Netz, dass das Gesicht auf dem Bild eine fröhliche Person darstellt und kann mit diesem Wissen Merkmale für fröhliche Gescihter sammeln. Nachdem das Netz fertig trainiert ist, also wenn alle Bilder durchgerechnet wurden, kann jetzt ein neues Bild in das netz gegeben werden. Hier nutzt das Netz die herausgearbeiteten Merkmale und versucht diese im neuen Bild wieder zu finden. 
 
 
-### Face Detection- Gesichtserkennung
+### Face Detection-Gesichtserkennung
 Da das neuronale Netz nur mathematische Operationen nutzt, ist es logisch, dass bei jedem Eingang auch ein Ergebnis am Ausgang vorliegt. Anders formuliert: Das Netz erkennt in einem Gegenstand (zB. einem Eimer) ebenso eine Emotion wie in einem Gesicht. Um dieses Szenario zu umgehen, und um die Genauigkeit des Netzes zu erhöhen, wird vor der Emotionserkennung, noch eine Gesichtserkennung geschaltet. So können nur Emotionen auf Gesichtern erkannt werden, und das Bild auf das Gesicht zugeschnitten werden. Durch den wahrscheinlich kleineren Bildausschnitt, steigt die Auflösung des Gesichts, wodurch das Gesicht die Emotionen besser erkennen kann.    Zur Gesichtserkennung wird die Haar Cascade von CV2, einer Python Bibliothek zur Bildverarbeitung und Computer Vision, genutzt. Hier bei handelt es sich um ein sogenanntes convolutional neural network (abk. cnn). Dabei wird immer ein kleines Fenster über das Bild geschoben und mit verschiedenen Bildbereichen mathematisch gefaltet. Dabei wird für jeden Bereich bestimmt, ob sich in diesem Bereich ein Gesicht befindet. Die Haar Cascade nutzt dabei noch bestimmte Muster, um so bestimmte Strukturen besser zu erkennen. So ähnelt die Form der Nasen einem horizontalen Balken, in dem Pixel für gewöhnlich heller sind als im Rest des Gesichts sind. Durch diesen Prozess ist es möglich eine Nase zu erkennen. Als Ausgabe gibt die Gesichtserkennung die Bildkoordinaten der Ecken des Rechtecks, dass das Gesicht enthält zurück. So kann später das Bild zugeschnitten werden.
 
 ### Emotion Recognition- Emotionserkennung
@@ -47,7 +47,7 @@ Da das neuronale Netz nur mathematische Operationen nutzt, ist es logisch, dass 
 <img aling="left" src="/Bilder/Emotionen_Datenset.png" width="600"/> \
 Im direkten Vergleich ist zusehen, dass CK+ zwar mehr Bilder insgesamt hat, aber diese auch auf mehr Emotionen verteilt sind. Dazu kommt, dass diese ungleich auf die Emotionen verteilt sind, was die Genauigkeit auch beeinflussen kann. Außerdem fallen bei Oulu-Casia zwei Emotionen weg. In diesem Fall "Neutral" und "Contempt" (dt. Verachtung). 
 
- <a name="lichtsteuerung"/a>
+
 ## Lichtsteuerung - Ansteuerung der Philipps Lampen
 Die Lichtsteuerung wird zuerst getrennt von der Farbzuordnung betrachtet. Hier soll nur die Kommunikation des Raspberry Pi's mit den verwendeten HUE Lampen erklärt werden. Vor Beginn wieder die Anmerkung, dass HUE Lampen verwendet wurden, da diese im Smart Home-Bereich weit verbreitet sind. Sie liegen damit dem späteren das Raumlicht zuhause anzupassen am nächsten. Die erste Idee war die Lampen direkt über Zigbee anzusteuern. Allerdings ist diese Implementierung kompliizerter und schlechter dokumentiert. In der späteren Umsetzung verwende ich http Request über das lokale Netzwerk. Im grunde baut man dabei eine URL für alle Befehle auf. 
 Als erstes ist der Befehl zum An- und Ausschalten der HUE Lampen zusehen.
