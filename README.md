@@ -10,6 +10,7 @@ By [Paul Theurer]
 4. [Philipps HUE Ansteuerung](#Lichtsteuerung---Ansteuerung-der-Philipps-Lampen)
 5. [Farb-Emotionszuordnung](#Farb--zu-Emotionszuordnung)
 6. [Anleitung](#Anleitung)
+7. [Quellen](#Quellen)
 
 ## Introduction
 
@@ -79,5 +80,5 @@ Zweidimensional dargestellt, ergibt sihc folgendes Muster:
 
 <img src="/Bilder/Farbkreis.png" width="800" /> \
 ## Anleitung
-### Quellen
+## Quellen
 Farbkegel: https://www.wikiwand.com/de/Robert_Plutchik
