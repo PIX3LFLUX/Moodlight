@@ -47,7 +47,7 @@ Da das neuronale Netz nur mathematische Operationen nutzt, ist es logisch, dass 
 <img aling="left" src="/Bilder/Emotionen_Datenset.png" width="600"/> \
 Im direkten Vergleich ist zusehen, dass CK+ zwar mehr Bilder insgesamt hat, aber diese auch auf mehr Emotionen verteilt sind. Dazu kommt, dass diese ungleich auf die Emotionen verteilt sind, was die Genauigkeit auch beeinflussen kann. Außerdem fallen bei Oulu-Casia zwei Emotionen weg. In diesem Fall "Neutral" und "Contempt" (dt. Verachtung). 
 
-<a name="lichtsteuerung"/a>
+ <a name="lichtsteuerung"/a>
 ## Lichtsteuerung - Ansteuerung der Philipps Lampen
 Die Lichtsteuerung wird zuerst getrennt von der Farbzuordnung betrachtet. Hier soll nur die Kommunikation des Raspberry Pi's mit den verwendeten HUE Lampen erklärt werden. Vor Beginn wieder die Anmerkung, dass HUE Lampen verwendet wurden, da diese im Smart Home-Bereich weit verbreitet sind. Sie liegen damit dem späteren das Raumlicht zuhause anzupassen am nächsten. Die erste Idee war die Lampen direkt über Zigbee anzusteuern. Allerdings ist diese Implementierung kompliizerter und schlechter dokumentiert. In der späteren Umsetzung verwende ich http Request über das lokale Netzwerk. Im grunde baut man dabei eine URL für alle Befehle auf. 
 Als erstes ist der Befehl zum An- und Ausschalten der HUE Lampen zusehen.
