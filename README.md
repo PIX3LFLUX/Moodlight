@@ -75,10 +75,16 @@ def switch_light_color(where,what):
  Mit den Befehlen "sat" und "bri" wird die Sättigung und die Helligkeit eingestellt. Der "what"-Parameter der Funktion ist die Farbe des Lichts. Diese ist von 1- 65.000 einstellbar. Wobei der Farbkreis auf diese Skala abgebildet wird. der Wert 0 beginnt dabei mit dunkelroten Farben und geht über orange, gelb, grün, blau wieder gegen rot. 
 
 ## Farb- zu Emotionszuordnung
-Bei der Zuordnung von Emotionen zu Farbe orientiert sich die Arbeit an **"Plutchiks Wheel of Emotion"**. Dieser geht in seiner Theorie von 8 Basisemotionen aus. Diese ordnet er Farben auf dem Farbkreis zu. Diese Theorie lässt sich dreidimensional erweitern. So wird aus dem Kreis ein Kegel. Dabei setzen sich alle anderen Emotionen aus einer Mischung der Basisemotionen zusammen. Dadurch ordnet er jeder Emotion eine Farbe zu.
-Zweidimensional dargestellt, ergibt sihc folgendes Muster: 
+Bei der Zuordnung von Emotionen zu Farbe orientiert sich die Arbeit an **"Plutchiks Wheel of Emotion"**. Dieser geht in seiner Theorie von 8 Basisemotionen aus. Diese ordnet er Farben auf dem Farbkreis zu. Diese Theorie lässt sich dreidimensional erweitern. So wird aus dem Kreis ein Kegel. Dabei setzen sich alle anderen Emotionen aus einer Mischung oder schwächeren Form der Basisemotionen zusammen. Durch diese Regeln können jetzt die Emotionen zu den vorhandenen Farben zugeordnet werden.
+Der Kegel wweidimensional dargestellt, ergibt sich folgendes Muster: 
 
 <img src="/Bilder/Farbkreis.png" width="800" /> \
+Die Emotionen aus der Emotionserkennung sind entweder direkt in der Graphik vertreten oder können daraus hergeleitet werden. Es muss angemerkt werden, dass die Zuordnung von Emotion zu Farbe zwar wissenschaftlich begründet ist, diese aber je nach Kultur varriieren kann.
 ## Anleitung
+Bevor die Anleitung zur Projektumsetzung beginnt, sei erwähnt, dass ich als Betriebssystem das neuste Raspberry Pi OS verwendet habe (Stand 03.08.2021). 
+1. Bevor mit der Umsetzung des Projekts begonnen werden kann, muss im Tool "Raspi-config" unter "Interfaces" die Kamera aktiviert werden. Sollten sie vorhaben über ssh zu entwickeln, können sie auch dieses Interface hier aktivieren.
+2. Danach kann mit dem Download des Projekts begonnen werden. Eine Anleitung zum Klonen des Repositorys kann [hier](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository) gefunden werden. 
+3. Nach dem Klonen des Repositorys müssen noch die benötigten Python-Bibliotheken installiert werden. Meine verwendeten Bibliotheken finden sie in der Datei "Readmyversions.txt". Falls sie probieren möchten, welche Versionen sie brauchen oder was noch fehlt, können sie auch einfach den Code ausführen. In den Fehlermeldungen steht entweder, dass die Bibliothek nicht gefunden wurde, oder dass die Funktionen der Python Bibliothek nicht gefunden wurde. Im zweiten Fall achten sie auf die verwendete Version.
+4. Änderungen im Code: Geben sie die jeweilige IP ihrer HUE Bridge an. Diese finden sie mithilfe der Philipps HUE App oder mit entsprechenden Tools über das Netzwerk. Im Code heißt die Variable "Bridge_ip". Unter modelDir können sie entweder "Models/CK/" für das CK+ basierte Netz oder "Models/OuluCASIA" für das auf dem Oulu-CASIA Datenset basierende Netz. Die "hue_group_name" also der Name der Philipps HUE Gruppe können sie in der App festlegen. Auch der Bridge Username muss geändert werden. Diesen müssen sie extra erstellen. Eine Anleitung dazu finden sie [hier](https://developers.meethue.com/develop/get-started-2/).
 ## Quellen
 Farbkegel: https://www.wikiwand.com/de/Robert_Plutchik
